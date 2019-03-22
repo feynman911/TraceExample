@@ -15,7 +15,7 @@ namespace TraceExample.ViewModels
         public MainWindowViewModel()
         {
             string st = "";
-            for(int i = 0;i < 100; i++)
+            for(int i = 0;i < 10; i++)
             {
                 st = "テスト:" + i.ToString("D2");
                 Trace.WriteLine(st);

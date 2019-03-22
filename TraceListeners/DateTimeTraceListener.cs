@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.IO;
@@ -28,7 +26,8 @@ namespace TraceListeners
     //    < add name="TraceSwitch" value="Information"/>
     //  </switches>
     //  <sharedListeners>
-    //    <add name = "datetime" type="TraceListeners.DateTimeTraceListener, TraceListeners"
+    //    <add name = "datetime" 
+    //         type="TraceListeners.DateTimeTraceListener, TraceListeners"
     //         initializeData=".\Trace\%YYYYMMDD%%SUFFIX%.log" 
     //         MaxSize="100000" 
     //         SuffixFormat="D2"
@@ -83,7 +82,7 @@ namespace TraceListeners
         }
         private string _suffixPlaceHolder = "%SUFFIX%";
         /// <summary>
-        /// ファイル名テンプレートに含まれるバージョンのプレースフォルダ
+        /// ファイル名テンプレートに含まれるSuffixのプレースフォルダ
         /// </summary>
         private string SuffixPlaceHolder
         {
@@ -231,7 +230,8 @@ namespace TraceListeners
                 // フルパスを求めると同時にファイル名に不正文字がないことの検証
                 string fullpath = Path.GetFullPath(filepath);
 
-                StreamWriter writer = new StreamWriter(fullpath, true, Encoding, _bufferSize);
+                StreamWriter writer = 
+                    new StreamWriter(fullpath,true,Encoding,_bufferSize);
                 _stream = writer;
                 _baseStream = writer.BaseStream;
                 _logDate = now;
@@ -302,7 +302,7 @@ namespace TraceListeners
             return filepath;
         }
         /// <summary>
-        /// ファイル名のテンプレートから日付バージョンを置き換えるヘルパ
+        /// ファイル名のテンプレートから日付Suffixを置き換えるヘルパ
         /// </summary>
         /// <param name="logDateTime"></param>
         /// <param name="version"></param>
@@ -312,11 +312,11 @@ namespace TraceListeners
             string t = FileNameTemplate;
             if (t.Contains(DatePlaceHolder))
             {
-                t = t.Replace(DatePlaceHolder, logDateTime.ToString(DateFormat));
+                t = t.Replace(DatePlaceHolder,logDateTime.ToString(DateFormat));
             }
             if (t.Contains(SuffixPlaceHolder))
             {
-                t = t.Replace(SuffixPlaceHolder, suffix.ToString(SuffixFormat));
+                t = t.Replace(SuffixPlaceHolder,suffix.ToString(SuffixFormat));
             }
             return t;
         }
@@ -324,18 +324,18 @@ namespace TraceListeners
         #region カスタム属性用
         /// <summary>
         /// サポートされているカスタム属性
-        /// MaxSize : ログファイルの最大サイズ
-        /// Encoding: 文字コード
-        /// DateFormat:ログファイル名の日付部分のフォーマット文字列
-        /// VersionFormat: ログファイルのバージョン部分のフォーマット文字列
-        /// DatePlaceHolder: ファイル名テンプレートの日付部分のプレースホルダ文字列
-        /// VersionPlaceHolder: ファイル名テンプレートのバージョブ部分のプレースホルダ文字列
+        /// MaxSize : logfileの最大size
+        /// Encoding: 文字code
+        /// DateFormat:logfile名の日付部分のformat文字列
+        /// SuffixFormat: logfileのSuffix部分のformat字列
+        /// DatePlaceHolder: file名templateの日付部分のPlaceHolder文字列
+        /// SuffixPlaceHolder: file名templateのSuffix部分のPlaceHolder文字列
         /// </summary>
         /// <returns></returns>
         protected override string[] GetSupportedAttributes()
         {
-            return new string[] { "MaxSize", "Encoding", "DateFormat", "SuffixFormat"
-                , "DatePlaceHolder", "SuffixPlaceHolder" };
+            return new string[] { "MaxSize", "Encoding", "DateFormat",
+                "SuffixFormat","DatePlaceHolder","SuffixPlaceHolder" };
         }
         /// <summary>
         /// カスタム属性
@@ -345,27 +345,27 @@ namespace TraceListeners
             if (!_attributeLoaded)
             {
                 // 最大バイト数
-                if (Attributes.ContainsKey("MaxSize")) { _maxSize = long.Parse(Attributes["MaxSize"]); }
+                if (Attributes.ContainsKey("MaxSize"))
+                    { _maxSize = long.Parse(Attributes["MaxSize"]); }
                 // エンコーディング
-                if (Attributes.ContainsKey("Encoding")) { _encoding = Encoding.GetEncoding(Attributes["Encoding"]); }
+                if (Attributes.ContainsKey("Encoding"))
+                    { _encoding = Encoding.GetEncoding(Attributes["Encoding"]); }
                 // 日付のフォーマット
-                if (Attributes.ContainsKey("DateFormat")) { _dateFormat = Attributes["DateFormat"]; }
-                // バージョンのフォーマット
-                if (Attributes.ContainsKey("SuffixFormat")) { _suffixFormat = Attributes["SuffixFormat"]; }
+                if (Attributes.ContainsKey("DateFormat"))
+                    { _dateFormat = Attributes["DateFormat"]; }
+                // Suffixのフォーマット
+                if (Attributes.ContainsKey("SuffixFormat"))
+                    { _suffixFormat = Attributes["SuffixFormat"]; }
                 // 日付のプレースホルダ
-                if (Attributes.ContainsKey("DatePlaceHolder")) { _datePlaceHolder = Attributes["DatePlaceHolder"]; }
+                if (Attributes.ContainsKey("DatePlaceHolder"))
+                    { _datePlaceHolder = Attributes["DatePlaceHolder"]; }
                 // ナンバーのプレースホルダ
-                if (Attributes.ContainsKey("SuffixPlaceHolder")) { _suffixPlaceHolder = Attributes["SuffixPlaceHolder"]; }
+                if (Attributes.ContainsKey("SuffixPlaceHolder"))
+                    { _suffixPlaceHolder = Attributes["SuffixPlaceHolder"]; }
 
                 _attributeLoaded = true;
             }
         }
         #endregion
-
-
-
-
-
-
     }
 }
